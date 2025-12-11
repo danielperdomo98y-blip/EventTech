@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe Detallado EventTech</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.5; 
+            color: #333; 
+            background-color: #f2f2f2; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .page { 
+            background: white; 
+            width: 21cm; /* Ancho A4 aproximado */
+            max-width: 100%;
+            margin: 0 auto 30px auto; 
+            padding: 2.5cm; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            box-sizing: border-box;
+        }
+        /* Tipografía y Encabezados */
+        h1 { color: #2c3e50; font-size: 24pt; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #2980b9; font-size: 18pt; margin-top: 30px; border-left: 5px solid #3498db; padding-left: 15px; }
+        h3 { color: #16a085; font-size: 14pt; margin-top: 20px; }
+        h4 { color: #555; font-size: 12pt; font-weight: bold; margin-top: 15px; text-transform: uppercase; }
+        
+        /* Tablas */
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 10pt; }
+        th { background-color: #2c3e50; color: white; padding: 10px; text-align: left; }
+        td { border: 1px solid #ddd; padding: 10px; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        /* Cajas y Listas */
+        .box-info { background-color: #e8f6f3; border-left: 5px solid #1abc9c; padding: 15px; margin: 15px 0; }
+        .box-arch { background-color: #f4f6f7; border: 1px solid #bdc3c7; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9em; white-space: pre-wrap; }
+        
+        ul { list-style-type: disc; margin-left: 20px; }
+        li { margin-bottom: 5px; }
+        
+        /* Código */
+        code { background-color: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        
+        /* Utilidades */
+        .check { color: #27ae60; font-weight: bold; }
+        .toc-link { text-decoration: none; color: #2980b9; display: block; margin-bottom: 5px; }
+        .page-break { page-break-after: always; }
+        
+        /* Portada */
+        .cover-title { font-size: 3em; color: #2c3e50; text-align: center; margin-top: 100px; border: none; }
+        .cover-subtitle { font-size: 1.5em; color: #7f8c8d; text-align: center; border: none; padding: 0; }
+        .cover-meta { margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+    <div class="page page-break">
+        <h1 class="cover-title">INFORME DETALLADO</h1>
+        <h2 class="cover-subtitle">PROYECTO EVENTTECH</h2>
+        <p style="text-align: center; font-size: 1.2em;">Plataforma de Gestión de Eventos (SaaS)</p>
+        
+        <div class="cover-meta">
+            <table style="width: 70%; margin: 0 auto; border: none;">
+                <tr style="background: none;">
+                    <td style="border: none; font-weight: bold; text-align: right; width: 40%; padding-right: 20px;">Fecha:</td>
+                    <td style="border: none;">Diciembre 2025</td>
+                </tr>
+                <tr style="background: none;">
+                    <td style="border: none; font-weight: bold; text-align: right; padding-right: 20px;">Versión:</td>
+                    <td style="border: none;">1.0</td>
+                </tr>
+                <tr style="background: none;">
+                    <td style="border: none; font-weight: bold; text-align: right; padding-right: 20px;">Estado:</td>
+                    <td style="border: none; color: #27ae60; font-weight: bold;">Fase de Planificación Completada</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="page page-break">
+        <h1>1. Resumen Ejecutivo</h1>
+        
+        <h3>¿Qué es EventTech?</h3>
+        <p>EventTech es una <strong>plataforma SaaS completa</strong> para la gestión integral de eventos. Permite a organizadores crear, gestionar y ejecutar eventos de cualquier tamaño con herramientas profesionales.</p>
+
+        <h3>Características Principales</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Característica</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Gestión de Eventos</strong></td><td>Crear, editar, publicar y archivar eventos.</td></tr>
+                <tr><td><strong>Registro de Asistentes</strong></td><td>Importación masiva, formularios dinámicos, validación.</td></tr>
+                <tr><td><strong>Sistema de Tickets</strong></td><td>Generación automática de QR, envío por email.</td></tr>
+                <tr><td><strong>Editor de Planos</strong></td><td>Diseño interactivo de espacios, mesas y asientos.</td></tr>
+                <tr><td><strong>Check-in Móvil</strong></td><td>Escaneo de QR en entrada del evento.</td></tr>
+                <tr><td><strong>Reportes y Analytics</strong></td><td>Dashboards con gráficos, estadísticas en tiempo real.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="box-info">
+            <strong>Valor Propuesto:</strong>
+            <ul>
+                <li>✅ <strong>Automatización:</strong> Reduce tiempo manual en gestión de eventos.</li>
+                <li>✅ <strong>Escalabilidad:</strong> Maneja eventos de 10 a 10,000+ asistentes.</li>
+                <li>✅ <strong>Profesionalismo:</strong> Interfaz moderna y fácil de usar.</li>
+                <li>✅ <strong>Seguridad:</strong> Autenticación, autorización, validación en capas.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page page-break">
+        <h1>2. Objetivos y Alcance</h1>
+
+        <h3>Objetivos Principales</h3>
+        
+        <h4>Corto Plazo (Fase 1-2: Semanas 1-8)</h4>
+        <ul>
+            <li><span class="check">✔</span> Establecer arquitectura modular y escalable.</li>
+            <li><span class="check">✔</span> Implementar autenticación y autorización.</li>
+            <li><span class="check">✔</span> Crear CRUD completo de eventos.</li>
+            <li><span class="check">✔</span> Implementar sistema de tickets con QR.</li>
+        </ul>
+
+        <h4>Mediano Plazo (Fase 3-4: Semanas 9-16)</h4>
+        <ul>
+            <li><span class="check">✔</span> Desarrollar editor de planos interactivo.</li>
+            <li><span class="check">✔</span> Implementar asignación de asientos.</li>
+            <li><span class="check">✔</span> Crear dashboards con analytics.</li>
+        </ul>
+
+        <h4>Largo Plazo (Fase 5-6: Semanas 17-24)</h4>
+        <ul>
+            <li><span class="check">✔</span> Desarrollar app de check-in móvil.</li>
+            <li><span class="check">✔</span> Optimizar performance y testing automatizado.</li>
+            <li><span class="check">✔</span> Preparar para producción.</li>
+        </ul>
+
+        <h3>Alcance del Proyecto (Incluido)</h3>
+        <table>
+            <tr>
+                <td>
+                    <strong>Backend:</strong>
+                    <ul>
+                        <li>API REST completa (50+ endpoints)</li>
+                        <li>Autenticación (Sanctum) & Roles (Spatie)</li>
+                        <li>Validación en servidor & Caching (Redis)</li>
+                    </ul>
+                </td>
+                <td>
+                    <strong>Frontend:</strong>
+                    <ul>
+                        <li>Interfaz responsive (Desktop + Móvil)</li>
+                        <li>Editor de planos interactivo (Canvas)</li>
+                        <li>Escaneo de QR</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page page-break">
+        <h1>3. Arquitectura Técnica</h1>
+
+        <h3>Principios de Diseño</h3>
+        <p><strong>1. Separación de Responsabilidades:</strong></p>
+        <div class="box-arch">Frontend (UI/UX) ←→ API REST ←→ Backend (Lógica)</div>
+
+        <p><strong>2. Modularidad por Dominio:</strong></p>
+        <div class="box-arch">
+Domain/Events/
+├── Models/
+├── Repositories/
+├── Services/
+├── Controllers/
+└── Requests/
+        </div>
+
+        <p><strong>3. Repository Pattern:</strong></p>
+        <div class="box-arch">Controller → Service → Repository → Model → Database</div>
+
+        <h3>Seguridad: Capas de Protección</h3>
+        <ul>
+            <li><strong>Autenticación:</strong> Tokens Bearer (Sanctum) y Refresh tokens.</li>
+            <li><strong>Autorización:</strong> Roles (super_admin, organizer, staff) y Policies.</li>
+            <li><strong>Validación:</strong> Server-side (FormRequest) y Client-side (JS).</li>
+            <li><strong>Rate Limiting:</strong> Límite de requests por IP y usuario.</li>
+        </ul>
+    </div>
+
+    <div class="page page-break">
+        <h1>4. Stack Tecnológico</h1>
+
+        <h3>Backend</h3>
+        <table>
+            <thead><tr><th>Componente</th><th>Tecnología</th><th>Versión</th><th>Propósito</th></tr></thead>
+            <tbody>
+                <tr><td>Framework</td><td>Laravel</td><td>11</td><td>Framework PHP moderno</td></tr>
+                <tr><td>Base de Datos</td><td>PostgreSQL</td><td>18</td><td>BD relacional robusta</td></tr>
+                <tr><td>Cache</td><td>Redis</td><td>Latest</td><td>Cache y queues</td></tr>
+                <tr><td>Permisos</td><td>Spatie</td><td>Latest</td><td>Roles y permisos</td></tr>
+                <tr><td>PDF</td><td>DomPDF</td><td>Latest</td><td>Generación de documentos</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Frontend</h3>
+        <table>
+            <thead><tr><th>Componente</th><th>Tecnología</th><th>Versión</th><th>Propósito</th></tr></thead>
+            <tbody>
+                <tr><td>Estilos</td><td>Tailwind CSS</td><td>3.x</td><td>Utility-first CSS</td></tr>
+                <tr><td>JavaScript</td><td>Vanilla ES6+</td><td>Latest</td><td>Lógica de cliente</td></tr>
+                <tr><td>Bundler</td><td>Vite</td><td>5.x</td><td>Build tool rápido</td></tr>
+                <tr><td>Canvas</td><td>Konva.js</td><td>9.x</td><td>Editor de planos</td></tr>
+                <tr><td>QR Scanner</td><td>html5-qrcode</td><td>2.x</td><td>Escaneo en navegador</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="page page-break">
+        <h1>5. Estructura del Proyecto</h1>
+        <p>Organización basada en Dominio (DDD Lite) para facilitar la escalabilidad.</p>
+
+        <div class="box-arch">
+EventTech/
+│
+├── backend/                          # 🔥 API REST Laravel 11
+│   ├── app/
+│   │   ├── Core/                     # Infraestructura reutilizable
+│   │   ├── Domain/                   # Lógica de negocio por módulo
+│   │   │   ├── Auth/                 # Autenticación
+│   │   │   ├── Events/               # Gestión de eventos
+│   │   │   ├── Attendees/            # Gestión de asistentes
+│   │   │   ├── Tickets/              # Sistema de tickets
+│   │   │   └── FloorPlans/           # Editor de planos
+│   │   ├── Http/                     # Capa de presentación (Controllers)
+│   │   └── Models/                   # Modelos Eloquent
+│   ├── database/                     # Migraciones y Seeders
+│   └── tests/                        # Tests Automatizados
+│
+├── frontend/                         # 🎨 Interfaz de usuario
+│   ├── public/assets/                # CSS, JS, Images
+│   ├── resources/views/              # Templates Blade/HTML
+│   └── vite.config.js                # Configuración Vite
+│
+└── shared/docs/                      # Documentación
+        </div>
+    </div>
+
+    <div class="page page-break">
+        <h1>6. Fases de Desarrollo (Semanas 1-8)</h1>
+
+        <h2>FASE 1: Fundamentos (Semanas 1-4)</h2>
+        
+        <h3>Semana 1: Configuración</h3>
+        <ul>
+            <li>Instalar PostgreSQL y Laravel 11.</li>
+            <li>Crear estructura de carpetas modular.</li>
+            <li>Configurar Git y entorno local.</li>
+        </ul>
+
+        <h3>Semana 2: Autenticación y Roles</h3>
+        <ul>
+            <li>Configurar Sanctum y Spatie Permissions.</li>
+            <li>Crear roles: super_admin, organizer, staff.</li>
+            <li>Endpoints: Login, Register, Logout, Me.</li>
+        </ul>
+
+        <h3>Semana 3: CRUD de Eventos</h3>
+        <ul>
+            <li>Implementar EventRepository y EventService.</li>
+            <li>Endpoints completos para gestión de eventos.</li>
+            <li>Tests de integración para el CRUD.</li>
+        </ul>
+
+        <h3>Semana 4: Frontend Base</h3>
+        <ul>
+            <li>Configurar Tailwind CSS.</li>
+            <li>Crear componentes UI (botones, cards, inputs).</li>
+            <li>Layout maestro y Sidebar.</li>
+        </ul>
+
+        <h2>FASE 2: Formularios y Tickets (Semanas 5-8)</h2>
+        <ul>
+            <li><strong>Semana 5:</strong> Constructor de Formularios (Campos dinámicos).</li>
+            <li><strong>Semana 6:</strong> API de Registro Público y validaciones.</li>
+            <li><strong>Semana 7-8:</strong> Sistema de Tickets (Generación QR, Envío de Email, PDFs).</li>
+        </ul>
+    </div>
+
+    <div class="page page-break">
+        <h1>7. Fases de Desarrollo (Semanas 9-24)</h1>
+
+        <h2>FASE 3: Editor de Planos (Semanas 9-12)</h2>
+        <div class="box-info">
+            Esta es la fase más compleja del frontend, requiriendo lógica de geometría y estado.
+        </div>
+        <ul>
+            <li><strong>Semana 9:</strong> Modelado de datos (FloorPlan, Tables) y API.</li>
+            <li><strong>Semana 10-11:</strong> Canvas interactivo con Konva.js (Drag & Drop, Zoom).</li>
+            <li><strong>Semana 12:</strong> Lógica de asignación de asientos y validación de aforo.</li>
+        </ul>
+
+        <h2>FASE 4: Reportes (Semanas 13-16)</h2>
+        <ul>
+            <li>Generación de PDFs masivos y Gafetes.</li>
+            <li>Dashboard con gráficas (Chart.js) de ventas y asistencia.</li>
+            <li>Exportación a Excel/CSV.</li>
+        </ul>
+
+        <h2>FASE 5: Móvil y Check-in (Semanas 17-20)</h2>
+        <ul>
+            <li>App móvil (PWA) optimizada.</li>
+            <li>Integración de escáner QR en navegador (html5-qrcode).</li>
+            <li>Soporte Offline para validación de tickets.</li>
+        </ul>
+
+        <h2>FASE 6: Deploy (Semanas 21-24)</h2>
+        <table>
+            <tr>
+                <td><strong>QA</strong></td>
+                <td>Coverage de tests > 70%, Auditoría de seguridad.</td>
+            </tr>
+            <tr>
+                <td><strong>Docs</strong></td>
+                <td>Manual de usuario y documentación técnica de API.</td>
+            </tr>
+            <tr>
+                <td><strong>Prod</strong></td>
+                <td>Setup de servidor de producción, CI/CD y monitoreo.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align: center; color: #7f8c8d; margin-top: 50px;">
+        <p>Informe generado para el equipo de desarrollo de EventTech.</p>
+    </div>
+
+</body>
+</html>
