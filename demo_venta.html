@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EventTech - La Plataforma Definitiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        accent: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e', // Rose/Redish for energetic action
+                            600: '#e11d48',
+                            900: '#881337',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal-text {
+            background: linear-gradient(to right, #0f172a 50%, rgba(15, 23, 42, 0.2) 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-position 1s ease-out;
+        }
+        
+        .reveal-text.active {
+            background-position: 0 0;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Custom CSS Shapes --- */
+        .orb {
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 20%),
+                        radial-gradient(circle at 70% 70%, var(--orb-color), rgba(255, 255, 255, 0) 50%);
+            box-shadow: inset 10px 10px 20px rgba(255, 255, 255, 0.5),
+                        inset -10px -10px 20px rgba(0, 0, 0, 0.05),
+                        0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Grid Background --- */
+        .bg-grid {
+            background-size: 60px 60px;
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+                              linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- NAVBAR FLOTANTE -->
+    <nav class="fixed top-6 left-0 right-0 z-50 flex justify-center">
+        <div class="glass-card rounded-full px-6 py-3 flex items-center gap-8 shadow-lg shadow-black/5 transition-all duration-300 hover:scale-105">
+            <a href="#" class="font-bold text-lg tracking-tight flex items-center gap-2">
+                <div class="w-4 h-4 bg-accent-600 rounded-full animate-pulse"></div>
+                EventTech
+            </a>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-slate-600">
+                <a href="#product" class="hover:text-accent-600 transition">Producto</a>
+                <a href="#tech" class="hover:text-accent-600 transition">Ingeniería</a>
+                <a href="#pricing" class="hover:text-accent-600 transition">Precios</a>
+            </div>
+            <a href="#" class="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-accent-600 transition duration-300">
+                Empezar
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: IMPACTO VISUAL -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+        <!-- Fondo Animado CSS (Burbujas) -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+            <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto mt-20">
+            <div class="fade-up inline-block mb-6 px-4 py-1.5 rounded-full border border-slate-200 bg-white/50 backdrop-blur text-sm font-medium text-slate-600">
+                🚀 La evolución del SaaS de eventos v2.0
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                <span class="block fade-up" style="transition-delay: 100ms;">Organiza.</span>
+                <span class="block fade-up text-transparent bg-clip-text bg-gradient-to-r from-accent-600 to-purple-600" style="transition-delay: 200ms;">Visualiza.</span>
+                <span class="block fade-up" style="transition-delay: 300ms;">Monetiza.</span>
+            </h1>
+
+            <p class="fade-up text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto mb-12 leading-relaxed" style="transition-delay: 400ms;">
+                La primera plataforma que combina un <span class="text-slate-900 font-semibold decoration-accent-500 underline decoration-2">editor visual de planos</span> con pagos globales y control de acceso offline.
+            </p>
+
+            <div class="fade-up flex justify-center gap-4" style="transition-delay: 500ms;">
+                <button class="group relative px-8 py-4 bg-slate-900 rounded-full text-white font-bold text-lg overflow-hidden transition-all hover:scale-105">
+                    <div class="absolute inset-0 w-full h-full bg-accent-600 transition-all duration-300 ease-out transform translate-y-full group-hover:translate-y-0"></div>
+                    <span class="relative flex items-center gap-2">
+                        Crear mi primer evento
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </button>
+                <button class="px-8 py-4 bg-white border border-slate-200 rounded-full text-slate-900 font-bold text-lg hover:border-slate-400 transition-all">
+                    Ver Demo Técnica
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: STORYTELLING SCROLL (EL PROBLEMA) -->
+    <section class="py-32 bg-slate-50 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-4xl md:text-6xl font-bold leading-tight mb-24 text-slate-300">
+                <span class="reveal-text">Los eventos solían ser hojas de cálculo, caos y estrés.</span>
+                <span class="reveal-text mt-4 block text-slate-900">Ahora son lienzos visuales.</span>
+            </h2>
+        </div>
+
+        <!-- Abstract Canvas Animation -->
+        <div class="relative w-full h-[60vh] flex items-center justify-center">
+            <!-- Representación abstracta del Canvas -->
+            <div class="relative w-[800px] h-[500px] glass-card rounded-3xl overflow-hidden shadow-2xl fade-up border-0 bg-white">
+                <!-- Grid Animado -->
+                <div class="absolute inset-0 bg-grid opacity-50"></div>
+                
+                <!-- Mesas Flotantes (CSS Orbs) -->
+                <div class="absolute top-1/2 left-1/2 w-24 h-24 rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center animate-float shadow-lg z-10" style="margin-top: -50px; margin-left: -50px; --orb-color: #e2e8f0;">
+                    <span class="text-xs font-bold text-slate-400">VIP 1</span>
+                </div>
+                <div class="absolute top-1/3 left-1/3 w-16 h-16 rounded-full bg-accent-50 border-2 border-accent-100 flex items-center justify-center animate-float shadow-lg z-20" style="animation-delay: 1s;">
+                    <span class="text-xs font-bold text-accent-500">$500</span>
+                </div>
+                <div class="absolute bottom-1/3 right-1/3 w-20 h-20 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center animate-float shadow-lg z-10" style="animation-delay: 2s;">
+                    <span class="text-xs font-bold text-purple-500">Mesa 5</span>
+                </div>
+
+                <!-- Cursor -->
+                <div class="absolute top-1/2 left-1/2 w-8 h-8 z-30 transform translate-x-10 translate-y-10 animate-pulse">
+                    <svg class="w-full h-full text-slate-900 drop-shadow-xl" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 18a.5.5 0 0 1-.403-.78l3.056-4.584-1.996-.285a.5.5 0 0 1-.168-.934l8.5-4.5a.5.5 0 0 1 .66.726l-5 8a.5.5 0 0 1-.922-.164l.642-1.926-3.766 4.383A.5.5 0 0 1 5.5 18z"/></svg>
+                </div>
+
+                <!-- UI Overlay -->
+                <div class="absolute top-6 left-6 right-6 flex justify-between">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    </div>
+                    <div class="px-3 py-1 bg-slate-100 rounded-full text-xs font-mono text-slate-500">
+                        EventTech Canvas Engine v2.0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: FEATURES CAROUSEL (CSS ONLY) -->
+    <section id="product" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 mb-20">
+            <h3 class="text-sm font-bold text-accent-600 uppercase tracking-widest mb-4">Todo en Uno</h3>
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900">Potencia invisible para tu negocio.</h2>
+        </div>
+
+        <!-- Horizontal Scroll Container -->
+        <div class="flex overflow-x-auto gap-8 pb-12 px-6 md:px-20 scrollbar-hide snap-x">
+            
+            <!-- Card 1: Canvas -->
+            <div class="min-w-[350px] md:min-w-[450px] h-[500px] bg-slate-50 rounded-[2.5rem] p-10 relative overflow-hidden snap-center hover:bg-slate-100 transition duration-500 group border border-slate-100">
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold mb-4 group-hover:text-orange-600 transition">Editor Visual</h3>
+                    <p class="text-slate-500 leading-relaxed">Olvídate de Excel. Arrastra mesas, diseña el layout y asigna precios por zona visualmente.</p>
+                </div>
+                <!-- Visual Abstracto -->
+                <div class="absolute bottom-[-50px] right-[-50px] w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-2xl group-hover:scale-150 transition duration-700"></div>
+                <div class="absolute bottom-10 right-10 w-32 h-32 border-4 border-orange-200 rounded-full flex items-center justify-center animate-spin-slow">
+                    <span class="text-4xl">🎨</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Monetización -->
+            <div class="min-w-[350px] md:min-w-[450px] h-[500px] bg-slate-50 rounded-[2.5rem] p-10 relative overflow-hidden snap-center hover:bg-slate-100 transition duration-500 group border border-slate-100">
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold mb-4 group-hover:text-teal-600 transition">Pagos Globales</h3>
+                    <p class="text-slate-500 leading-relaxed">Cobra entradas en segundos. Integración nativa con Stripe y MercadoPago. El dinero va directo a tu cuenta.</p>
+                </div>
+                <div class="absolute bottom-[-50px] right-[-50px] w-64 h-64 bg-teal-100 rounded-full mix-blend-multiply filter blur-2xl group-hover:scale-150 transition duration-700"></div>
+                <!-- Abstract Credit Card -->
+                <div class="absolute bottom-12 right-12 w-48 h-32 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl shadow-xl transform rotate-6 group-hover:rotate-12 transition duration-500 flex flex-col justify-end p-4">
+                    <div class="w-12 h-8 bg-white/30 rounded mb-2"></div>
+                    <div class="w-full h-2 bg-white/20 rounded"></div>
+                </div>
+            </div>
+
+            <!-- Card 3: Check-in -->
+            <div class="min-w-[350px] md:min-w-[450px] h-[500px] bg-slate-50 rounded-[2.5rem] p-10 relative overflow-hidden snap-center hover:bg-slate-100 transition duration-500 group border border-slate-100">
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold mb-4 group-hover:text-purple-600 transition">Control Offline</h3>
+                    <p class="text-slate-500 leading-relaxed">¿Sin internet en la puerta? No hay problema. Nuestra app valida QRs sin conexión y sincroniza después.</p>
+                </div>
+                <div class="absolute bottom-[-50px] right-[-50px] w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-2xl group-hover:scale-150 transition duration-700"></div>
+                <!-- Abstract QR Code -->
+                <div class="absolute bottom-16 right-16 w-32 h-32 bg-white border-4 border-purple-200 rounded-xl p-2 grid grid-cols-3 gap-1 transform -rotate-3 group-hover:rotate-0 transition">
+                    <div class="bg-slate-900 rounded col-span-2 row-span-2"></div>
+                    <div class="bg-slate-900 rounded"></div>
+                    <div class="bg-slate-900 rounded"></div>
+                    <div class="bg-slate-900 rounded"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: TECHNICAL DEEP DIVE (INTEGRATED) -->
+    <section id="tech" class="py-32 bg-slate-900 text-white relative overflow-hidden">
+        <!-- Technical Grid Background -->
+        <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Ingeniería de Precisión.</h2>
+                    <p class="text-slate-400 text-lg max-w-xl">Construido sobre un stack monolítico moderno diseñado para velocidad y escalabilidad.</p>
+                </div>
+                <div class="mt-8 md:mt-0">
+                    <span class="px-4 py-2 border border-slate-700 rounded-full text-xs font-mono text-slate-400">v2.0.0-stable</span>
+                </div>
+            </div>
+
+            <!-- Tech Specs Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Spec 1 -->
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition duration-300">
+                    <div class="text-indigo-400 font-mono text-xs mb-2">BACKEND CORE</div>
+                    <div class="text-2xl font-bold mb-2">Laravel 11</div>
+                    <p class="text-sm text-slate-400">Arquitectura robusta con PHP 8.2+. Manejo de colas con Redis para procesos asíncronos.</p>
+                </div>
+                <!-- Spec 2 -->
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition duration-300">
+                    <div class="text-teal-400 font-mono text-xs mb-2">DATABASE</div>
+                    <div class="text-2xl font-bold mb-2">PostgreSQL</div>
+                    <p class="text-sm text-slate-400">Persistencia híbrida. Tablas relacionales para ventas y columnas <strong>JSONB</strong> para configuraciones flexibles.</p>
+                </div>
+                <!-- Spec 3 -->
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition duration-300">
+                    <div class="text-orange-400 font-mono text-xs mb-2">VISUAL ENGINE</div>
+                    <div class="text-2xl font-bold mb-2">Konva.js</div>
+                    <p class="text-sm text-slate-400">Renderizado de Canvas 2D de alto rendimiento. Manipulación de objetos y sistemas de coordenadas.</p>
+                </div>
+                <!-- Spec 4 -->
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition duration-300">
+                    <div class="text-pink-400 font-mono text-xs mb-2">INTEGRATIONS</div>
+                    <div class="text-2xl font-bold mb-2">Stripe API</div>
+                    <p class="text-sm text-slate-400">Webhooks seguros para confirmación de pagos y generación automática de tickets PDF (DomPDF).</p>
+                </div>
+            </div>
+
+            <!-- Code Snippet Showcase -->
+            <div class="mt-16 bg-[#0B1120] border border-white/10 rounded-2xl p-8 font-mono text-sm overflow-hidden relative group">
+                <div class="absolute top-4 right-4 flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-slate-500 mb-4">// Ejemplo de estructura de datos del Plano (JSONB)</div>
+                <pre class="text-green-400 overflow-x-auto">
+{
+  "event_id": "evt_89234",
+  "canvas_config": {
+    "width": 2000,
+    "height": 1500,
+    "objects": [
+      { "id": "table_1", "type": "round_8", "x": 120, "y": 300, "price_tier": "vip" },
+      { "id": "stage_main", "type": "rect", "x": 800, "y": 50, "width": 400 }
+    ]
+  }
+}</pre>
+                <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-[#0B1120] to-transparent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="py-32 bg-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tight">
+                Listo para el show.
+            </h2>
+            <p class="text-xl text-slate-500 mb-12">
+                Únete a la nueva generación de organizadores que prefieren la tecnología sobre el caos.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="px-10 py-5 bg-accent-600 text-white font-bold rounded-full text-lg shadow-xl shadow-accent-200 hover:bg-accent-700 transition transform hover:-translate-y-1">
+                    Comenzar Gratis
+                </button>
+                <button class="px-10 py-5 bg-white text-slate-900 border border-slate-200 font-bold rounded-full text-lg hover:bg-slate-50 transition">
+                    Contactar Ventas
+                </button>
+            </div>
+        </div>
+        
+        <!-- Marquee Background (Texto corriendo) -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden opacity-5 pointer-events-none">
+            <div class="whitespace-nowrap animate-marquee py-4">
+                <span class="text-9xl font-black uppercase mx-4">EventTech</span>
+                <span class="text-9xl font-black uppercase mx-4">Sold Out</span>
+                <span class="text-9xl font-black uppercase mx-4">Experience</span>
+                <span class="text-9xl font-black uppercase mx-4">EventTech</span>
+                <span class="text-9xl font-black uppercase mx-4">Sold Out</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-50 border-t border-slate-200 py-16">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-slate-900 rounded-md"></div>
+                <span class="font-bold text-slate-900 text-lg">EventTech</span>
+            </div>
+            <div class="text-sm text-slate-500">
+                &copy; 2025 Proyecto de Tesis Ingeniería. Todos los derechos reservados.
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-slate-400 hover:text-slate-900 transition">Twitter</a>
+                <a href="#" class="text-slate-400 hover:text-slate-900 transition">GitHub</a>
+                <a href="#" class="text-slate-400 hover:text-slate-900 transition">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT ANIMACIONES SCROLL -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up, .reveal-text').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
