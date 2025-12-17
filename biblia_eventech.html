@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Maestro EventTech V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+            color: #1c1917;
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background-color: #d6d3d1;
+            z-index: 0;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Custom Scrollbar for internal panels */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #a8a29e;
+            border-radius: 3px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #78716c;
+        }
+
+        /* Phase Accordion Animation */
+        .phase-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .phase-content.active {
+            max-height: 2000px;
+            /* Arbitrary large height */
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-100 text-stone-800 antialiased">
+
+    <header class="bg-white shadow-sm border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-stone-900 tracking-tight">EventTech <span
+                        class="text-indigo-600">V2.0</span></h1>
+                <p class="text-sm text-stone-500">Plan de Implementación Blindado (6 Meses)</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex gap-4 text-sm">
+                <div class="flex items-center gap-2 px-3 py-1 bg-stone-100 rounded-full">
+                    <span class="font-semibold text-stone-600">Stack:</span>
+                    <span class="text-indigo-600 font-medium">Laravel 11</span>
+                    <span class="text-teal-600 font-medium">PostgreSQL</span>
+                    <span class="text-sky-600 font-medium">Tailwind</span>
+                    <span class="text-orange-600 font-medium">Konva.js</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+            <h2 class="text-lg font-bold text-stone-800 mb-2">Visión General del Proyecto</h2>
+            <p class="text-stone-600 leading-relaxed">
+                Esta aplicación interactiva desglosa el plan maestro para construir <strong>EventTech</strong>, una
+                plataforma SaaS robusta para gestión de eventos.
+                Navegue por las fases a continuación para entender la arquitectura técnica, la lógica de negocio (pagos
+                y tickets),
+                y el núcleo visual interactivo (Canvas). Utilice los checkbox para simular el progreso del desarrollo y
+                ver cómo cambian las métricas en tiempo real.
+                <strong class="text-indigo-600">¡El progreso ahora se guarda automáticamente!</strong>
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-end mb-2">
+                    <h2 class="text-xl font-bold text-stone-800">Hoja de Ruta Interactiva</h2>
+                    <span class="text-xs text-stone-500 bg-stone-200 px-2 py-1 rounded">24 Semanas Totales</span>
+                </div>
+
+                <div id="roadmap-container" class="space-y-4 timeline-line relative pl-2">
+                </div>
+            </div>
+
+            <div class="space-y-8">
+
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-indigo-100">
+                    <h3 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Progreso Simulado</h3>
+                    <div class="chart-container relative">
+                        <canvas id="progressChart"></canvas>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                            <span id="progress-percentage" class="text-3xl font-bold text-indigo-600">0%</span>
+                            <span class="text-xs text-stone-400">Completado</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-xs text-stone-500">Marque las tareas en la izquierda para actualizar.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Carga de Trabajo por Área
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="workloadChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-xs text-stone-500 text-center">Distribución de tareas Backend vs Frontend vs QA
+                    </p>
+                </div>
+
+                <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                    <h3 class="text-indigo-900 font-bold mb-2">&#9881; Lógica del Canvas (Fase 3)</h3>
+                    <p class="text-sm text-indigo-700 mb-4">
+                        El núcleo diferenciador del proyecto. Así funciona el flujo de datos para el editor visual:
+                    </p>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="flex items-center gap-2 p-2 bg-white rounded border border-indigo-200 shadow-sm">
+                            <span class="text-xl">&#128433;</span>
+                            <div>
+                                <strong class="block text-indigo-900">Frontend (Konva.js)</strong>
+                                <span class="text-stone-500">Renderiza JSONB a Objetos Canvas</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-center text-indigo-300 font-bold">&#8595; Serialización (JSON)</div>
+                        <div class="flex items-center gap-2 p-2 bg-white rounded border border-indigo-200 shadow-sm">
+                            <span class="text-xl">&#128229;</span>
+                            <div>
+                                <strong class="block text-indigo-900">API Endpoint</strong>
+                                <span class="text-stone-500">PUT /api/events/{id}/floorplan</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-center text-indigo-300 font-bold">&#8595; Persistencia</div>
+                        <div class="flex items-center gap-2 p-2 bg-white rounded border border-indigo-200 shadow-sm">
+                            <span class="text-xl">&#128427;</span>
+                            <div>
+                                <strong class="block text-indigo-900">PostgreSQL (JSONB)</strong>
+                                <span class="text-stone-500">Guarda estructura completa sin esquemas rígidos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-teal-50 p-6 rounded-xl border border-teal-100">
+                    <h3 class="text-teal-900 font-bold mb-2">&#128179; Flujo de Monetización</h3>
+                    <ul class="text-sm space-y-2 text-teal-800">
+                        <li class="flex gap-2">
+                            <span>1.</span>
+                            <span>Checkout inicia (Stripe/MercadoPago).</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span>2.</span>
+                            <span>Webhook recibe "Payment Success".</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span>3.</span>
+                            <span>Job en Cola genera Ticket PDF + QR.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span>4.</span>
+                            <span>Email asíncrono enviado al usuario.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-stone-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-stone-500 text-sm">
+            <p>&copy; 2025 EventTech Implementation Plan. Generado basado en "Biblia EventTech V2.0".</p>
+        </div>
+    </footer>
+
+    <script>
+
+        // --- DATA SOURCE: Ahora cargado desde una mini 'base de datos' JSON ---
+        const projectData = [
+            {
+                id: "p1",
+                title: "Fase 1: Cimientos y Medios",
+                weeks: "Semanas 1-4",
+                desc: "Arquitectura, Base de Datos, Auth y Gestión de Imágenes.",
+                color: "border-l-4 border-indigo-500",
+                tasks: [
+                    { id: "t1.1", week: 1, type: "Backend", text: "Instalación Laravel 11 + PostgreSQL + Extenciones PHP (fileinfo, gd)." },
+                    { id: "t1.2", week: 1, type: "Backend", text: "Migraciones Core (Users, Events, FloorPlans)." },
+                    { id: "t1.3", week: 1, type: "Backend", text: "Configurar Casts JSONB en Modelos." },
+                    { id: "t1.4", week: 1, type: "Frontend", text: "Setup Tailwind CSS + Iconos SVG." },
+                    { id: "t2.1", week: 2, type: "Backend", text: "Roles y Permisos (Spatie)." },
+                    { id: "t2.2", week: 2, type: "Backend", text: "Instalar Laravel Breeze." },
+                    { id: "t2.3", week: 2, type: "Frontend", text: "Rediseñar Vistas Auth (Login/Registro)." },
+                    { id: "t3.1", week: 3, type: "Backend", text: "Instalar Spatie Media Library." },
+                    { id: "t3.2", week: 3, type: "Backend", text: "Conversiones de Imagen Automáticas (WebP)." },
+                    { id: "t3.3", week: 3, type: "Frontend", text: "UI Carga de Imágenes con Preview." },
+                    { id: "t4.1", week: 4, type: "Backend", text: "Importador Excel (Maatwebsite)." },
+                    { id: "t4.2", week: 4, type: "Backend", text: "Migración Asistentes (UUID, QR, Pagos)." },
+                    { id: "t4.3", week: 4, type: "Backend", text: "EventController CRUD Completo (store, update, destroy)." },
+                    { id: "t4.4", week: 4, type: "Frontend", text: "Vistas Eventos (index, create, edit, show)." },
+                    { id: "t4.5", week: 4, type: "Frontend", text: "Dashboard con Estadísticas y KPIs." },
+                    { id: "t4.6", week: 4, type: "Frontend", text: "Modal Personalizado de Confirmación (Alpine.js)." },
+                    { id: "t4.7", week: 4, type: "Backend", text: "AttendeeController con método import()." },
+                    { id: "t4.8", week: 4, type: "Frontend", text: "Vista Asistentes con Modal de Importación." },
+
+                    // EXTRAS - Sistema de Configuración Dinámica
+                    { id: "t4.9", week: 4, type: "Backend", text: "EXTRA: Tabla settings con modelo y caché." },
+                    { id: "t4.10", week: 4, type: "Backend", text: "EXTRA: SettingsController completo." },
+                    { id: "t4.11", week: 4, type: "Frontend", text: "EXTRA: Vista /settings con panel admin." },
+                    { id: "t4.12", week: 4, type: "Frontend", text: "EXTRA: 4 color pickers visuales (gradientes hex)." },
+                    { id: "t4.13", week: 4, type: "Frontend", text: "EXTRA: Selector de 50+ fuentes con búsqueda." },
+                    { id: "t4.14", week: 4, type: "Frontend", text: "EXTRA: Vista previa en tiempo real (Alpine.js)." },
+                    { id: "t4.15", week: 4, type: "Frontend", text: "EXTRA: Carga dinámica de Google Fonts." },
+                    { id: "t4.16", week: 4, type: "Frontend", text: "EXTRA: Hero login 100% personalizable." },
+
+                    // EXTRAS - Componentes Modernos
+                    { id: "t4.17", week: 4, type: "Frontend", text: "EXTRA: modern-styles.css (Glassmorphism)." },
+                    { id: "t4.18", week: 4, type: "Frontend", text: "EXTRA: kpi-card.blade.php (4 variantes)." },
+                    { id: "t4.19", week: 4, type: "Frontend", text: "EXTRA: sidebar.blade.php (Glass-dark)." },
+                    { id: "t4.20", week: 4, type: "Frontend", text: "EXTRA: app-modern.blade.php (Layout)." },
+
+                    // EXTRAS - Vistas de Autenticación Completas
+                    { id: "t4.21", week: 4, type: "Frontend", text: "EXTRA: 3 vistas auth adicionales (forgot/reset/verify)." },
+
+                    // EXTRAS - Mejoras Técnicas
+                    { id: "t4.22", week: 4, type: "Backend", text: "EXTRA: Migración tipos de eventos + restricciones CHECK." },
+                    { id: "t4.23", week: 4, type: "Backend", text: "EXTRA: Corrección validaciones formularios." },
+                    { id: "t4.24", week: 4, type: "Backend", text: "EXTRA: Configuración storage symlink." },
+                    { id: "t4.25", week: 4, type: "Backend", text: "EXTRA: Conversiones WebP síncronas (4 tamaños)." },
+                    { id: "t4.26", week: 4, type: "Backend", text: "EXTRA: SettingsSeeder con valores por defecto." }
+                ]
+            },
+            {
+                id: "p2",
+                title: "Fase 2: Monetización y Pública",
+                weeks: "Semanas 5-8",
+                desc: "Constructor de formularios, Landing Pages y Pasarelas de Pago.",
+                color: "border-l-4 border-teal-500",
+                tasks: [
+                    { id: "t5.1", week: 5, type: "Backend", text: "API Campos Dinámicos (JSONB)." },
+                    { id: "t5.2", week: 5, type: "Frontend", text: "Builder Drag & Drop (Admin)." },
+                    { id: "t6.1", week: 6, type: "Frontend", text: "Renderizado Dinámico de Landing Page." },
+                    { id: "t6.2", week: 6, type: "Frontend", text: "Whitelabeling (Logos/Banners dinámicos)." },
+                    { id: "t7.1", week: 7, type: "Backend", text: "Integración Stripe/MercadoPago." },
+                    { id: "t7.2", week: 7, type: "Backend", text: "Webhooks de Pago y Cambio de Estado." },
+                    { id: "t8.1", week: 8, type: "Backend", text: "Listener Evento TicketPaid -> Generar QR." },
+                    { id: "t8.2", week: 8, type: "Backend", text: "Generación PDF (DomPDF)." },
+                    { id: "t8.3", week: 8, type: "Backend", text: "Envío Email Asíncrono (Queue)." },
+
+                    // EXTRAS - Mejoras Form Builder
+                    { id: "t5.3", week: 5, type: "Frontend", text: "EXTRA: Sortable.js para drag & drop de campos." },
+                    { id: "t5.4", week: 5, type: "Frontend", text: "EXTRA: Botón Nombre+Apellido automático." },
+                    { id: "t5.5", week: 5, type: "Backend", text: "EXTRA: Validación formularios vacíos permitida." },
+                    { id: "t5.6", week: 5, type: "Frontend", text: "EXTRA: Modal glass-pro para eliminar campos." },
+
+                    // EXTRAS - Mejoras Landing Pages
+                    { id: "t6.3", week: 6, type: "Frontend", text: "EXTRA: Formateo automático teléfono venezolano (+58-424-1234567)." },
+                    { id: "t6.4", week: 6, type: "Frontend", text: "EXTRA: Validación HTML5 pattern para teléfonos." },
+                    { id: "t6.5", week: 6, type: "Frontend", text: "EXTRA: Prevención JavaScript de letras en tel." },
+                    { id: "t6.6", week: 6, type: "Backend", text: "EXTRA: Email nullable (no genera emails falsos)." },
+                    { id: "t6.7", week: 6, type: "Frontend", text: "EXTRA: Página confirmación con colores sistema." },
+
+                    // EXTRAS - Mejoras Pagos
+                    { id: "t7.3", week: 7, type: "Backend", text: "EXTRA: Estados diferenciados (confirmed para gratis)." },
+                    { id: "t7.4", week: 7, type: "Frontend", text: "EXTRA: Estadísticas dinámicas según tipo evento." },
+                    { id: "t7.5", week: 7, type: "Backend", text: "EXTRA: Migración payment_status constraint." },
+                    { id: "t7.6", week: 7, type: "Frontend", text: "EXTRA: Badges visuales para estados de pago." },
+
+                    // EXTRAS - Mejoras Generales
+                    { id: "t8.4", week: 8, type: "Frontend", text: "EXTRA: Componente phone-input reutilizable." },
+                    { id: "t8.5", week: 8, type: "Backend", text: "EXTRA: Validación mapeo inteligente de campos." },
+                    { id: "t8.6", week: 8, type: "Frontend", text: "EXTRA: Toast notifications para feedback." }
+                ]
+            },
+            {
+                id: "p2.5",
+                title: "Fase 2.5: Documentación Completa",
+                weeks: "Semanas 8.5-9.5",
+                desc: "Documentación técnica, manuales de usuario, diagramas y guías profesionales.",
+                color: "border-l-4 border-amber-500",
+                tasks: [
+                    // Semana 8.5 - Diagramas y Arquitectura
+                    { id: "t8.5.1", week: 8.5, type: "Docs", text: "Diagrama ERD de Base de Datos (Mermaid)." },
+                    { id: "t8.5.2", week: 8.5, type: "Docs", text: "Diagrama de Arquitectura del Sistema." },
+                    { id: "t8.5.3", week: 8.5, type: "Docs", text: "Diagrama de Flujo de Pagos." },
+                    { id: "t8.5.4", week: 8.5, type: "Docs", text: "Manual Técnico Completo." },
+                    { id: "t8.5.5", week: 8.5, type: "Docs", text: "Documentación de API (Endpoints)." },
+                    { id: "t8.5.6", week: 8.5, type: "Docs", text: "Guía de Base de Datos." },
+
+                    // Semana 9 - Manuales de Usuario
+                    { id: "t9.0.1", week: 9, type: "Docs", text: "Manual de Administrador." },
+                    { id: "t9.0.2", week: 9, type: "Docs", text: "Manual de Organizador de Eventos." },
+                    { id: "t9.0.3", week: 9, type: "Docs", text: "Guía de Registro Público." },
+
+                    // Semana 9.5 - Deployment y Desarrollo
+                    { id: "t9.5.1", week: 9.5, type: "Docs", text: "Guía de Instalación Local." },
+                    { id: "t9.5.2", week: 9.5, type: "Docs", text: "Guía de Deployment en Producción." },
+                    { id: "t9.5.3", week: 9.5, type: "Docs", text: "Guía de Configuración de Stripe." },
+                    { id: "t9.5.4", week: 9.5, type: "Docs", text: "Guía de Contribución." },
+                    { id: "t9.5.5", week: 9.5, type: "Docs", text: "Guía de Testing." },
+                    { id: "t9.5.6", week: 9.5, type: "Docs", text: "Guía de Debugging." },
+
+                    // Documentación de Features
+                    { id: "t9.5.7", week: 9.5, type: "Docs", text: "Form Builder - Documentación." },
+                    { id: "t9.5.8", week: 9.5, type: "Docs", text: "Sistema de Pagos - Documentación." },
+                    { id: "t9.5.9", week: 9.5, type: "Docs", text: "Sistema de Tickets - Documentación." },
+
+                    // Design System
+                    { id: "t9.5.10", week: 9.5, type: "Docs", text: "Design System y Guía de Componentes." },
+
+                    // Changelog y Roadmap
+                    { id: "t9.5.11", week: 9.5, type: "Docs", text: "CHANGELOG.md y ROADMAP.md." }
+                ]
+            },
+            {
+                id: "p3",
+                title: "Fase 3: Canvas Interactivo",
+                weeks: "Semanas 9-12",
+                desc: "El editor visual tipo 'Sims' con Konva.js.",
+                color: "border-l-4 border-orange-500",
+                tasks: [
+                    { id: "t9.1", week: 9, type: "Frontend", text: "Konva.js Init: Stage, Layer, Zoom/Pan." },
+                    { id: "t10.1", week: 10, type: "Frontend", text: "Librería de Activos (Sidebar SVG)." },
+                    { id: "t10.2", week: 10, type: "Frontend", text: "Lógica Drag & Drop HTML -> Canvas." },
+                    { id: "t11.1", week: 11, type: "Frontend", text: "Serialización JSON (stage.toJSON)." },
+                    { id: "t11.2", week: 11, type: "Frontend", text: "Auto-guardado." },
+                    { id: "t11.3", week: 11, type: "Backend", text: "Endpoint PUT /floorplan (Persistencia)." },
+                    { id: "t12.1", week: 12, type: "Frontend", text: "Drag Invitados a Mesas." },
+                    { id: "t12.2", week: 12, type: "Frontend", text: "Validaciones Visuales (Rebote/Color)." }
+                ]
+            },
+            {
+                id: "p4",
+                title: "Fase 4: Reportes y Salida",
+                weeks: "Semanas 13-16",
+                desc: "Gafetes, Dashboards y Vistas de Impresión.",
+                color: "border-l-4 border-blue-500",
+                tasks: [
+                    { id: "t13.1", week: 13, type: "Frontend", text: "Editor WYSIWYG de Gafetes." },
+                    { id: "t14.1", week: 14, type: "Frontend", text: "Dashboards (Chart.js) Ventas/Asistencia." },
+                    { id: "t15.1", week: 15, type: "Frontend", text: "CSS Print para Listas de Puerta." },
+                    { id: "t16.1", week: 16, type: "Frontend", text: "UX: Loaders y Skeletons." }
+                ]
+            },
+            {
+                id: "p5",
+                title: "Fase 5: Seguridad y QA",
+                weeks: "Semanas 17-20",
+                desc: "App Check-in, Seguridad y Testing Automático.",
+                color: "border-l-4 border-purple-500",
+                tasks: [
+                    { id: "t17.1", week: 17, type: "Backend", text: "Rate Limiting & Sanitización." },
+                    { id: "t18.1", week: 18, type: "Frontend", text: "App Check-in (Web) + html5-qrcode." },
+                    { id: "t19.1", week: 19, type: "Backend", text: "Caching Redis." },
+                    { id: "t20.1", week: 20, type: "QA", text: "Setup Laravel Dusk." },
+                    { id: "t20.2", week: 20, type: "QA", text: "Test E2E: Flujo Crítico." },
+                    { id: "t20.3", week: 20, type: "QA", text: "Test E2E: Canvas Save." }
+                ]
+            },
+            {
+                id: "p6",
+                title: "Fase 6: Lanzamiento",
+                weeks: "Semanas 21-24",
+                desc: "Despliegue, Datos Demo y Defensa.",
+                color: "border-l-4 border-emerald-500",
+                tasks: [
+                    { id: "t21.1", week: 21, type: "DevOps", text: "Despliegue (VPS/PaaS), SSL, Workers." },
+                    { id: "t22.1", week: 22, type: "Content", text: "Crear Datos Demo (Evento Impactante)." },
+                    { id: "t23.1", week: 23, type: "Docs", text: "Manual Técnico y de Usuario." },
+                    { id: "t24.1", week: 24, type: "Defense", text: "Simulacro de Defensa." }
+                ]
+            }
+        ];
+
+        // --- STATE MANAGEMENT & JSON FILE ---
+
+        let completedTasks = new Set();
+        let workloadData = { Backend: 0, Frontend: 0, QA: 0, DevOps: 0, Content: 0, Docs: 0, Defense: 0 };
+        const JSON_FILE = './biblia_progress.json'; // Archivo JSON local
+
+        async function loadCompletedTasks() {
+            try {
+                const response = await fetch(JSON_FILE);
+                if (response.ok) {
+                    const data = await response.json();
+                    completedTasks = new Set(data.completedTasks || []);
+                    console.log('✅ Progreso cargado desde JSON:', completedTasks.size, 'tareas completadas');
+                } else {
+                    console.warn('⚠️ No se pudo cargar biblia_progress.json, iniciando vacío');
+                }
+            } catch (error) {
+                console.warn('⚠️ Error al cargar JSON:', error.message);
+            }
+        }
+
+        async function saveCompletedTasks() {
+            const data = {
+                completedTasks: Array.from(completedTasks),
+                lastUpdated: new Date().toISOString(),
+                currentPhase: getCurrentPhase(),
+                notes: "Progreso guardado automáticamente"
+            };
+
+
+
+            try {
+                const response = await fetch('./save_progress.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                // Guardado exitoso - silencioso
+            } catch (error) {
+                // Error silencioso
+            }
+        }
+
+        function getCurrentPhase() {
+            // Determinar fase actual basado en tareas completadas
+            const phase1Tasks = ['t1.1', 't1.2', 't1.3', 't1.4', 't2.1', 't2.2', 't2.3', 't3.1', 't3.2', 't3.3', 't4.1', 't4.2', 't4.3', 't4.4', 't4.5', 't4.6', 't4.7', 't4.8'];
+            const phase2Tasks = ['t5.1', 't5.2', 't6.1', 't6.2', 't7.1', 't7.2', 't8.1', 't8.2', 't8.3'];
+
+            const phase1Complete = phase1Tasks.every(t => completedTasks.has(t));
+            const phase2Complete = phase2Tasks.every(t => completedTasks.has(t));
+
+            if (phase2Complete) return 3;
+            if (phase1Complete) return 2;
+            return 1;
+        }
+
+        // --- DOM ELEMENTS ---
+        const roadmapContainer = document.getElementById('roadmap-container');
+        const progressPercentageEl = document.getElementById('progress-percentage');
+        let progressChartInstance = null;
+        let workloadChartInstance = null;
+
+        // --- LOGIC ---
+
+        function calculateInitialWorkload() {
+            // Resetear data cada vez que se calcula (aunque init sólo lo hace una vez)
+            workloadData = { Backend: 0, Frontend: 0, QA: 0, DevOps: 0, Content: 0, Docs: 0, Defense: 0 };
+
+            projectData.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    const type = task.type;
+                    if (workloadData.hasOwnProperty(type)) {
+                        workloadData[type]++;
+                    } else {
+                        // Capturar cualquier tipo no definido como 'Otros', aunque no hay en el JSON actual
+                        workloadData['Content']++;
+                    }
+                });
+            });
+        }
+
+        function renderRoadmap() {
+            roadmapContainer.innerHTML = '';
+
+            projectData.forEach((phase, index) => {
+                const phaseEl = document.createElement('div');
+                phaseEl.className = `bg-white rounded-lg shadow-sm mb-4 overflow-hidden relative z-10 card-hover transition-all duration-300 ml-4 ${phase.color}`;
+
+                // Header
+                const header = document.createElement('div');
+                header.className = 'p-4 cursor-pointer flex justify-between items-center bg-stone-50 hover:bg-stone-100 transition-colors';
+                header.onclick = () => togglePhase(index);
+                header.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-stone-800">${phase.title}</h3>
+                        <p class="text-xs text-stone-500">${phase.weeks} &bull; ${phase.desc}</p>
+                    </div>
+                    <span class="text-stone-400 transform transition-transform duration-300" id="icon-${index}">&#9660;</span>
+                `;
+
+                // Content (Tasks)
+                const content = document.createElement('div');
+                content.id = `content-${index}`;
+                content.className = 'phase-content bg-white';
+
+                const taskList = document.createElement('div');
+                taskList.className = 'p-4 space-y-3';
+
+                phase.tasks.forEach(task => {
+                    const taskItem = document.createElement('label');
+                    taskItem.className = 'flex items-start gap-3 cursor-pointer group';
+
+                    // Cargar estado persistente
+                    const checked = completedTasks.has(task.id) ? 'checked' : '';
+
+                    // Type Badge Color (ajustado para la nueva data)
+                    let typeColor = 'bg-stone-200 text-stone-600';
+                    if (task.type === 'Backend') typeColor = 'bg-indigo-100 text-indigo-700';
+                    if (task.type === 'Frontend') typeColor = 'bg-teal-100 text-teal-700';
+                    if (task.type === 'QA') typeColor = 'bg-purple-100 text-purple-700';
+                    if (task.type === 'DevOps') typeColor = 'bg-emerald-100 text-emerald-700';
+                    if (task.type === 'Content' || task.type === 'Docs' || task.type === 'Defense') typeColor = 'bg-orange-100 text-orange-700';
+
+
+                    taskItem.innerHTML = `
+                        <input type="checkbox" class="mt-1 w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500 border-gray-300 transition-all" 
+                            onchange="toggleTask('${task.id}')" ${checked}>
+                        <div class="text-sm text-stone-600 group-hover:text-stone-900 transition-colors flex-1">
+                            <span class="text-xs font-bold px-1.5 py-0.5 rounded ${typeColor} mr-1">${task.type}</span>
+                            Week ${task.week}: ${task.text}
+                        </div>
+                    `;
+                    taskList.appendChild(taskItem);
+                });
+
+                content.appendChild(taskList);
+                phaseEl.appendChild(header);
+                phaseEl.appendChild(content);
+                roadmapContainer.appendChild(phaseEl);
+            });
+        }
+
+        function togglePhase(index) {
+            const content = document.getElementById(`content-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Colapsar los demás
+                document.querySelectorAll('.phase-content.active').forEach(c => {
+                    c.classList.remove('active');
+                });
+                document.querySelectorAll('[id^="icon-"]').forEach(i => {
+                    i.style.transform = 'rotate(0deg)';
+                });
+
+                // Abrir el seleccionado
+                content.classList.add('active');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function toggleTask(taskId) {
+            if (completedTasks.has(taskId)) {
+                completedTasks.delete(taskId);
+            } else {
+                completedTasks.add(taskId);
+            }
+            saveCompletedTasks(); // Guardar el nuevo estado inmediatamente
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalTasks = projectData.reduce((acc, phase) => acc + phase.tasks.length, 0);
+            const completedCount = completedTasks.size;
+            const percentage = Math.round((completedCount / totalTasks) * 100);
+
+            // Update Text
+            progressPercentageEl.innerText = `${percentage}%`;
+
+            // Update Chart
+            if (progressChartInstance) {
+                progressChartInstance.data.datasets[0].data = [completedCount, totalTasks - completedCount];
+                progressChartInstance.update();
+            }
+        }
+
+        function initCharts() {
+            // 1. Progress Donut Chart
+            const ctxProgress = document.getElementById('progressChart').getContext('2d');
+
+            // Si ya existe, destruirlo antes de crear uno nuevo (para evitar memory leaks en re-renders, aunque no aplica aquí)
+            if (progressChartInstance) progressChartInstance.destroy();
+
+            progressChartInstance = new Chart(ctxProgress, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completado', 'Pendiente'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#4f46e5', '#e5e7eb'], // Indigo-600, Gray-200
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+
+            // 2. Workload Bar Chart
+            const ctxWorkload = document.getElementById('workloadChart').getContext('2d');
+
+            // Si ya existe, destruirlo
+            if (workloadChartInstance) workloadChartInstance.destroy();
+
+            // Ajustar las etiquetas y datos para incluir todos los tipos de la Fase 6
+            const labels = ['Backend', 'Frontend', 'QA', 'DevOps', 'Otros (Contenido/Docs/Defensa)'];
+            const dataValues = [
+                workloadData.Backend,
+                workloadData.Frontend,
+                workloadData.QA,
+                workloadData.DevOps,
+                workloadData.Content + workloadData.Docs + workloadData.Defense
+            ];
+
+            workloadChartInstance = new Chart(ctxWorkload, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Tareas',
+                        data: dataValues,
+                        backgroundColor: [
+                            '#4f46e5', // Indigo (Backend)
+                            '#0d9488', // Teal (Frontend)
+                            '#9333ea', // Purple (QA)
+                            '#10b981', // Emerald (DevOps)
+                            '#f97316'  // Orange (Otros)
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Función de inicialización principal
+        async function init() {
+            await loadCompletedTasks();  // 1. Cargar el estado persistente desde JSON
+            calculateInitialWorkload();  // 2. Calcular la distribución de tareas
+            renderRoadmap();             // 3. Renderizar el roadmap (con checkboxes marcados)
+            initCharts();                // 4. Inicializar los gráficos
+            updateProgress();            // 5. Actualizar los gráficos con el estado cargado
+        }
+
+        // Start
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+
+</html>
