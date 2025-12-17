@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EventTech V2.0 - Demo & Docs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuración de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc; /* Slate 50 - Fondo claro */
+            color: #1e293b; /* Slate 800 - Texto oscuro */
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- UTILIDADES VISUALES (Light Mode) --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 50px -10px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Gradientes para texto */
+        .text-gradient {
+            background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Mockup Oscuro (para contraste visual) */
+        .mockup-dark {
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Fondos Blob */
+        .bg-blob-indigo { background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(255,255,255,0) 70%); }
+        .bg-blob-teal { background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, rgba(255,255,255,0) 70%); }
+        .bg-blob-orange { background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(255,255,255,0) 70%); }
+    </style>
+</head>
+<body class="selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- FONDOS ORGÁNICOS -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-blob-indigo animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-blob-orange animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-blob-teal animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 top-0 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo(0,0)">
+                <div class="relative w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+                    <span class="font-bold text-xl relative z-10">E</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-xl tracking-tight text-slate-800 group-hover:text-indigo-600 transition leading-none">EventTech</span>
+                    <span class="text-[10px] text-teal-600 font-bold uppercase tracking-wider">V2.0 PRO</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-600">
+                <a href="#canvas-demo" class="hover:text-indigo-600 transition">Demo Visual</a>
+                <a href="#features" class="hover:text-indigo-600 transition">Fases</a>
+                <a href="#docs" class="text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full transition hover:bg-indigo-100 hover:text-indigo-700">Ingeniería del Sistema</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#" class="px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold shadow-lg hover:bg-slate-800 hover:shadow-xl transition-all hover:-translate-y-0.5">
+                    Login Admin
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-visible">
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            
+            <div class="reveal inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white border border-indigo-100 shadow-sm mb-8 hover:border-indigo-200 transition cursor-default">
+                <div class="flex -space-x-2">
+                    <div class="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[8px] font-bold text-indigo-700" title="Laravel 11">L11</div>
+                    <div class="w-6 h-6 rounded-full bg-sky-100 border-2 border-white flex items-center justify-center text-[8px] font-bold text-sky-700" title="Tailwind">TW</div>
+                    <div class="w-6 h-6 rounded-full bg-orange-100 border-2 border-white flex items-center justify-center text-[8px] font-bold text-orange-700" title="Konva.js">K</div>
+                </div>
+                <span class="text-indigo-900 text-xs font-bold tracking-wide uppercase border-l border-slate-200 pl-3">Arquitectura Blindada</span>
+            </div>
+
+            <h1 class="reveal delay-100 text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                Gestión de eventos con <br>
+                <span class="text-gradient">precisión de ingeniería.</span>
+            </h1>
+            
+            <p class="reveal delay-200 mt-6 max-w-2xl mx-auto text-lg text-slate-600 mb-10 leading-relaxed">
+                Plataforma B2B "Todo en Uno". Desde el diseño visual del plano con <strong>Konva.js</strong> hasta el control de acceso offline y monetización vía <strong>Stripe</strong>.
+            </p>
+
+            <div class="reveal delay-300 flex justify-center gap-5 flex-col sm:flex-row px-4">
+                <a href="#docs" class="px-8 py-4 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition shadow-xl shadow-indigo-200 transform hover:-translate-y-1">
+                    Ver Documentación Técnica
+                </a>
+                <button class="px-8 py-4 rounded-full bg-white text-slate-700 border border-slate-200 font-semibold hover:bg-slate-50 hover:border-slate-300 transition shadow-sm flex items-center gap-2">
+                    <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Ver Demo en Vivo
+                </button>
+            </div>
+
+            <!-- MOCKUP DEL DASHBOARD -->
+            <div id="canvas-demo" class="reveal delay-300 mt-24 relative mx-auto max-w-6xl perspective-1000 group">
+                <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 blur-3xl opacity-50 -z-10 rounded-[3rem] transform scale-95"></div>
+                <div class="relative rounded-2xl mockup-dark animate-float overflow-hidden">
+                    <!-- Top Bar -->
+                    <div class="h-10 bg-[#1e293b] border-b border-slate-700 flex items-center px-4 gap-3">
+                        <div class="flex gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-red-500"></div><div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div><div class="w-2.5 h-2.5 rounded-full bg-green-500"></div></div>
+                        <div class="px-3 py-1 rounded bg-slate-800 text-[10px] text-slate-400 font-mono flex items-center gap-2 border border-slate-700/50">editor.eventtech.io/floorplan/v2</div>
+                    </div>
+                    <!-- App Interface -->
+                    <div class="grid grid-cols-12 h-[500px] md:h-[600px] overflow-hidden bg-[#0f172a] relative">
+                        <!-- Sidebar -->
+                        <div class="hidden md:flex col-span-2 border-r border-slate-800 bg-[#1e293b]/50 flex-col p-4 space-y-4">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2">Activos</span>
+                            <div class="p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-orange-500/50 cursor-grab group/item transition">
+                                <div class="w-8 h-8 rounded-full border-2 border-orange-500/30 mx-auto mb-2"></div>
+                                <div class="text-[10px] text-center text-slate-400">Mesa Redonda</div>
+                            </div>
+                            <div class="p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-orange-500/50 cursor-grab group/item transition">
+                                <div class="w-12 h-8 rounded border-2 border-orange-500/30 mx-auto mb-2"></div>
+                                <div class="text-[10px] text-center text-slate-400">Escenario</div>
+                            </div>
+                        </div>
+                        <!-- Canvas -->
+                        <div class="col-span-12 md:col-span-8 relative bg-[#020617] overflow-hidden">
+                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#64748b 1px, transparent 1px); background-size: 20px 20px;"></div>
+                            
+                            <!-- Floating Data -->
+                            <div class="absolute top-4 right-4 p-3 bg-slate-900/80 backdrop-blur rounded border border-teal-500/20 hidden lg:block shadow-lg">
+                                <div class="mb-1 text-slate-500 text-[10px] font-mono">// JSON Object</div>
+                                <div class="text-[10px] font-mono text-teal-400">{ "x": 450, "y": 200, "type": "table" }</div>
+                            </div>
+
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-orange-500/60 bg-orange-500/10 flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.2)]">
+                                <span class="text-[10px] text-orange-300 font-mono font-bold">Mesa Principal</span>
+                                <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-600 border border-slate-500"></div>
+                                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-600 border border-slate-500"></div>
+                                <div class="absolute top-1/2 -left-4 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-600 border border-slate-500"></div>
+                                <div class="absolute top-1/2 -right-4 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-600 border border-slate-500"></div>
+                            </div>
+                        </div>
+                        <!-- Properties -->
+                        <div class="hidden md:flex col-span-2 border-l border-slate-800 bg-[#1e293b]/50 flex-col p-4">
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Propiedades</div>
+                            <div class="space-y-3">
+                                <div><label class="text-[10px] text-slate-500 block mb-1">ID</label><div class="h-7 w-full bg-slate-800 rounded border border-indigo-500/30 flex items-center px-2 text-[10px] text-white font-mono">UUID-98A2...</div></div>
+                                <div><label class="text-[10px] text-slate-500 block mb-1">Precio</label><div class="h-7 w-full bg-slate-800 rounded border border-indigo-500/30 flex items-center px-2 text-[10px] text-white font-mono">$150.00</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES (FASES) -->
+    <section id="features" class="py-32 relative bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="reveal text-teal-600 font-bold tracking-[0.2em] text-xs uppercase mb-4">Plan Maestro</h2>
+                <h3 class="reveal delay-100 text-3xl md:text-5xl font-bold text-slate-900 mb-6">Módulos del Sistema</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="reveal glass-panel rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-orange-100 rounded-full blur-3xl group-hover:bg-orange-200 transition"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-2xl border border-orange-100 mb-6">🎨</div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">Editor Visual (Konva.js)</h4>
+                        <p class="text-slate-600 text-sm mb-4">Diseño de layout con Drag & Drop y asignación de precios.</p>
+                        <span class="px-2 py-1 rounded bg-slate-100 text-[10px] font-bold text-slate-600 border border-slate-200">Fase 3 Core</span>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="reveal delay-100 glass-panel rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-teal-100 rounded-full blur-3xl group-hover:bg-teal-200 transition"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl border border-teal-100 mb-6">💸</div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">Monetización</h4>
+                        <p class="text-slate-600 text-sm mb-4">Integración Stripe/MercadoPago y generación de LPs.</p>
+                        <span class="px-2 py-1 rounded bg-slate-100 text-[10px] font-bold text-slate-600 border border-slate-200">Fase 2</span>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="reveal delay-200 glass-panel rounded-3xl p-10 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-purple-100 rounded-full blur-3xl group-hover:bg-purple-200 transition"></div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl border border-purple-100 mb-6">📱</div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-3">Check-in Offline</h4>
+                        <p class="text-slate-600 text-sm mb-4">Escáner QR optimizado (html5-qrcode) con sync.</p>
+                        <span class="px-2 py-1 rounded bg-slate-100 text-[10px] font-bold text-slate-600 border border-slate-200">Fase 5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN DE INGENIERÍA INTEGRADA (COMPLETA - TODA LA INFO) -->
+    <!-- ========================================================= -->
+    <section id="docs" class="py-32 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
+        
+        <!-- Decoración Fondo -->
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-50/50 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="reveal text-indigo-600 font-bold tracking-[0.2em] text-xs uppercase mb-4">Documentación Técnica Detallada</h2>
+                <h3 class="reveal delay-100 text-3xl md:text-5xl font-bold text-slate-900 mb-6">Ingeniería del Proyecto V2.0</h3>
+                <p class="reveal delay-200 text-slate-500 max-w-3xl mx-auto">
+                    Especificaciones técnicas completas, paquetes utilizados y lógica interna del sistema EventTech.
+                </p>
+            </div>
+
+            <!-- 1. BACKEND & ECOSYSTEM -->
+            <div class="reveal mb-16">
+                <h4 class="text-xl font-bold text-slate-800 mb-8 border-b border-slate-200 pb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span> 1. Backend Ecosystem (Fase 1)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+                        <h5 class="text-indigo-700 font-bold mb-3">Core Framework</h5>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>• <strong>Laravel 11:</strong> Framework base (PHP 8.2+).</li>
+                            <li>• <strong>PostgreSQL 16:</strong> Motor de base de datos con soporte nativo JSONB.</li>
+                            <li>• <strong>Laravel Breeze:</strong> Scaffolding de autenticación inicial.</li>
+                            <li>• <strong>Redis:</strong> Cache layer y manejo de colas.</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+                        <h5 class="text-indigo-700 font-bold mb-3">Paquetes Críticos</h5>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>• <strong>Spatie Permissions:</strong> Gestión granular de roles (Admin/Organizador).</li>
+                            <li>• <strong>Spatie Media Library:</strong> Gestión de imágenes optimizadas (WebP).</li>
+                            <li>• <strong>Maatwebsite Excel:</strong> Importación masiva de asistentes.</li>
+                            <li>• <strong>DomPDF:</strong> Generación de tickets PDF en background.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. FRONTEND & VISUAL CORE -->
+            <div class="reveal delay-100 mb-16">
+                <h4 class="text-xl font-bold text-slate-800 mb-8 border-b border-slate-200 pb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-orange-500"></span> 2. Frontend & Visual Core (Fase 3)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="col-span-1 p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+                        <h5 class="text-orange-600 font-bold mb-3">Konva.js Logic</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            El editor visual no usa HTML elements, sino un <strong>Canvas 2D</strong> de alto rendimiento.
+                        </p>
+                        <ul class="text-xs text-slate-500 font-mono bg-slate-50 p-3 rounded">
+                            <li>- Layers: Grid, Furniture, Zones</li>
+                            <li>- Events: DragMove, Click, Transform</li>
+                            <li>- Serialization: stage.toJSON()</li>
+                        </ul>
+                    </div>
+                    <div class="col-span-2 rounded-xl bg-[#1e1e1e] p-6 border border-slate-800 overflow-hidden relative group">
+                        <div class="absolute top-2 right-4 text-xs text-slate-500">floorplan_schema.jsonb</div>
+<pre class="text-xs font-mono text-gray-300 leading-relaxed">
+<span class="text-purple-400">{</span>
+  <span class="text-blue-400">"attrs"</span>: <span class="text-purple-400">{</span> <span class="text-blue-400">"width"</span>: <span class="text-orange-400">2000</span>, <span class="text-blue-400">"height"</span>: <span class="text-orange-400">2000</span> <span class="text-purple-400">}</span>,
+  <span class="text-blue-400">"children"</span>: <span class="text-purple-400">[</span>
+    <span class="text-yellow-400">{</span>
+      <span class="text-blue-400">"className"</span>: <span class="text-green-400">"Layer"</span>,
+      <span class="text-blue-400">"children"</span>: <span class="text-purple-400">[</span>
+        <span class="text-yellow-400">{</span>
+          <span class="text-blue-400">"className"</span>: <span class="text-green-400">"Circle"</span>,
+          <span class="text-blue-400">"attrs"</span>: <span class="text-purple-400">{</span>
+            <span class="text-blue-400">"x"</span>: <span class="text-orange-400">450</span>, <span class="text-blue-400">"y"</span>: <span class="text-orange-400">200</span>, 
+            <span class="text-blue-400">"radius"</span>: <span class="text-orange-400">30</span>, 
+            <span class="text-blue-400">"id"</span>: <span class="text-green-400">"table_1"</span>,
+            <span class="text-blue-400">"draggable"</span>: <span class="text-orange-400">true</span>
+          <span class="text-purple-400">}</span>
+        <span class="text-yellow-400">}</span>
+      <span class="text-purple-400">]</span>
+    <span class="text-yellow-400">}</span>
+  <span class="text-purple-400">]</span>
+<span class="text-purple-400">}</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. DB SCHEMA & DYNAMIC FIELDS -->
+            <div class="reveal delay-200 mb-16">
+                <h4 class="text-xl font-bold text-slate-800 mb-8 border-b border-slate-200 pb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-teal-500"></span> 3. Base de Datos & Campos Dinámicos
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">users</span>
+                        <span class="text-xs text-slate-500">Admins & Staff</span>
+                    </div>
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">events</span>
+                        <span class="text-xs text-slate-500">Core Data + Config JSON</span>
+                    </div>
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">floorplans</span>
+                        <span class="text-xs text-slate-500">Konva Data (JSONB)</span>
+                    </div>
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">attendees</span>
+                        <span class="text-xs text-slate-500">UUID, Meta Data (JSONB)</span>
+                    </div>
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">settings</span>
+                        <span class="text-xs text-slate-500">Global Config Cache</span>
+                    </div>
+                    <div class="p-4 bg-white border-l-4 border-teal-500 rounded shadow-sm">
+                        <span class="block font-bold text-slate-700">media</span>
+                        <span class="text-xs text-slate-500">Spatie Polymorphic</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MONETIZACIÓN & COLAS -->
+            <div class="reveal delay-300 grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span> 4. Flujo de Monetización (Fase 2)
+                    </h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded bg-green-100 text-green-600 flex items-center justify-center font-bold text-xs">1</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-slate-700">Checkout</h5>
+                                <p class="text-xs text-slate-500">Selección en Canvas + Bloqueo temporal en Redis.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded bg-green-100 text-green-600 flex items-center justify-center font-bold text-xs">2</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-slate-700">Pasarela</h5>
+                                <p class="text-xs text-slate-500">Stripe/MercadoPago procesa el pago seguro.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded bg-green-100 text-green-600 flex items-center justify-center font-bold text-xs">3</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-slate-700">Webhook Listener</h5>
+                                <p class="text-xs text-slate-500">Recibe <code>payment.succeeded</code> y dispara evento <code>TicketPaid</code>.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded bg-green-100 text-green-600 flex items-center justify-center font-bold text-xs">4</div>
+                            <div>
+                                <h5 class="text-sm font-bold text-slate-700">Colas Asíncronas</h5>
+                                <p class="text-xs text-slate-500">Job: Generar PDF (DomPDF) -> Job: Enviar Email (SMTP).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-purple-500"></span> 5. QA, Seguridad & Deploy (Fase 5/6)
+                    </h4>
+                    <div class="space-y-6 text-sm text-slate-600">
+                        <div>
+                            <strong class="text-purple-700 block mb-1">Testing Automatizado</strong>
+                            <p>Uso de <strong>Laravel Dusk</strong> para pruebas E2E del Canvas (simular Drag & Drop) y flujo crítico de compra.</p>
+                        </div>
+                        <div>
+                            <strong class="text-purple-700 block mb-1">Seguridad</strong>
+                            <p>Implementación de <strong>Rate Limiting</strong> en API endpoints y Sanitización de entradas WYSIWYG para prevenir XSS.</p>
+                        </div>
+                        <div>
+                            <strong class="text-purple-700 block mb-1">Despliegue</strong>
+                            <p>Configuración VPS (Ubuntu 22.04) con Nginx, SSL (Let's Encrypt), Supervisor para Colas y Redis para Caché.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-200 bg-white py-16 relative">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-sm font-bold text-white shadow-lg shadow-indigo-500/30">E</div>
+                    <span class="text-slate-900 text-xl font-bold tracking-tight">EventTech V2.0</span>
+                </div>
+                <p class="text-slate-500 text-sm max-w-xs leading-relaxed">
+                    Software as a Service (SaaS) desarrollado como Proyecto de Tesis de Ingeniería.
+                    <br><br>
+                    <strong>Stack:</strong> Laravel 11, Tailwind, PostgreSQL, Konva.js.
+                </p>
+            </div>
+            
+            <div>
+                <h5 class="text-slate-900 font-bold mb-4 text-sm uppercase tracking-wider">Módulos</h5>
+                <ul class="space-y-3 text-slate-500 text-sm">
+                    <li><a href="#" class="hover:text-indigo-600 transition">Builder de Formularios</a></li>
+                    <li><a href="#" class="hover:text-indigo-600 transition">Editor Canvas</a></li>
+                    <li><a href="#" class="hover:text-indigo-600 transition">Scanner QR</a></li>
+                    <li><a href="#" class="hover:text-indigo-600 transition">Gafetes PDF</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h5 class="text-slate-900 font-bold mb-4 text-sm uppercase tracking-wider">Enlaces</h5>
+                <ul class="space-y-3 text-slate-500 text-sm">
+                    <li><a href="#" class="hover:text-indigo-600 transition">Documentación API</a></li>
+                    <li><a href="#" class="hover:text-indigo-600 transition">GitHub Repo</a></li>
+                    <li><a href="#" class="hover:text-indigo-600 transition">Login Admin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-slate-100 text-center text-xs text-slate-400">
+            &copy; 2025 EventTech. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- SCRIPT ANIMACIONES -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
